@@ -32,6 +32,37 @@
       label = "Test Pin 4";
     };
   };
+
+  gpi_connector: connector {
+    compatible = "tekdaqc-gpi";
+    #gpio-cells = <2>;
+    gpio-map-mask = <0xffffffff 0xffffffc0>;
+    gpio-map-pass-thru = <0 0x3f>;
+    gpio-map =  <0 0 &gpioe 5 0>,    // E5
+                <1 0 &gpioe 4 0>,    // E4
+                <2 0 &gpioi 8 0>,    // I8
+                <3 0 &gpioi 11 0>,   // I11
+                <4 0 &gpioh 3 0>,    // H3
+                <5 0 &gpioh 4 0>,    // H4
+                <6 0 &gpiof 11 0>,   // F11
+                <7 0 &gpiof 15 0>,   // F15
+                <8 0 &gpioe 8 0>,    // E8
+                <9 0 &gpioe 12 0>,   // E12
+                <10 0 &gpioh 6 0>,   // H6
+                <11 0 &gpioh 11 0>,  // H11
+                <12 0 &gpioe 3 0>,   // E3
+                <13 0 &gpioe 2 0>,   // E2
+                <14 0 &gpioe 6 0>,   // E6
+                <15 0 &gpioh 5 0>,   // H5
+                <16 0 &gpiof 9 0>,   // F9
+                <17 0 &gpioh 2 0>,   // H2
+                <18 0 &gpiob 1 0>,   // B1
+                <19 0 &gpiof 13 0>,  // F13
+                <20 0 &gpiog 1 0>,   // G1
+                <21 0 &gpioe 10 0>,  // E10
+                <22 0 &gpioh 8 0>,   // H8
+                <23 0 &gpioh 10 0>;  // H10
+  };
 };
 
 &usart2 {

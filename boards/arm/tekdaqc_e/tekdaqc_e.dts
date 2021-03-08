@@ -1,0 +1,62 @@
+/dts-v1/;
+#include <st/f4/stm32f407Xg.dtsi>
+#include <st/f4/stm32f407i(e-g)tx-pinctrl.dtsi>
+
+/ {
+  model = "Tekdaqc Rev E";
+  compatible = "tk,tekdaqc_e";
+
+  chosen {
+    zephyr,console = &usart2;
+    zephyr,shell-uart = &usart2;
+    zephyr,sram = &sram0;
+    zephyr,flash = &flash0;
+  };
+
+  leds {
+    compatible = "gpio-leds";
+    test_pin_1: led_1 {
+      gpios = <&gpiog 6 GPIO_ACTIVE_HIGH>;
+      label = "Test Pin 1";
+    };
+    test_pin_2: led_2 {
+      gpios = <&gpiog 8 GPIO_ACTIVE_HIGH>;
+      label = "Test Pin 2";
+    };
+    test_pin_3: led_3 {
+      gpios = <&gpioi 8 GPIO_ACTIVE_HIGH>;
+      label = "Test Pin 3";
+    };
+    test_pin_4: led_4 {
+      gpios = <&gpioi 10 GPIO_ACTIVE_HIGH>;
+      label = "Test Pin 4";
+    };
+  };
+};
+
+&usart2 {
+  pinctrl-0 = <&usart2_tx_pd5 &usart2_rx_pd6>;
+  current-speed = <115200>;
+  status = "okay";
+};
+
+&usart3 {
+  pinctrl-0 = <&usart3_tx_pd8 &usart3_rx_pd9>;
+  current-speed = <115200>;
+  status = "okay";
+};
+
+&rtc { status = "okay"; };
+
+&rng { status = "okay"; };
+
+&spi2 {
+  pinctrl-0 = <&spi2_sck_pb10 &spi2_miso_pb14 &spi2_mosi_pi3>;
+  status = "okay";
+};
+
+&mac {
+  pinctrl-0 = <&eth_ref_clk_pa1 &eth_mdio_pa2 &eth_crs_dv_pa7 &eth_tx_en_pb11 &eth_txd1_pb13 &eth_mdc_pc1 &eth_rxd0_pc4 &eth_rxd1_pc5 &eth_txd0_pg13>;
+  local-mac-address = [00 80 E1 00 00 00];
+  status = "okay";
+};

@@ -1,0 +1,11 @@
+# TekDAQC Rev E board configuration
+
+# Copyright (c) 2016 Linaro Limited.
+# SPDX-License-Identifier: Apache-2.0
+
+if BOARD_TEKDAQC_E
+
+config BOARD
+	default "tekdaqc_e"
+
+endif # BOARD_TEKDAQC_E

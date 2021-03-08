@@ -1,0 +1,5 @@
+# TekDAQC Rev E board configuration
+
+config BOARD_TEKDAQC_E
+	bool "TekDAQC Rev E Data Acquisition Board"
+	depends on SOC_STM32F407XG

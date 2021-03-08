@@ -1,0 +1,12 @@
+identifier: tekdaqc_e
+name: Tenkiv TekDAQC Rev E Data Acquisition Board
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+ram: 128
+flash: 1024
+supported:
+  - gpio
+  - spi

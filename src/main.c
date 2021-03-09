@@ -1,11 +1,14 @@
-#include "network.h"
-#include <device.h>
 #include <devicetree.h>
 #include <stdio.h>
 #include <zephyr.h>
+#include <logging/log.h>
 
-K_THREAD_DEFINE(dhcp_mdns, DHCP_MDNS_THREAD_STACKSIZE, initialize_dhcp, NULL,
-                NULL, NULL, DHCP_MDNS_THREAD_PRIORITY, 0, 0);
+LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
+
+#include "network.h"
+
+//K_THREAD_DEFINE(dhcp_mdns, DHCP_MDNS_THREAD_STACKSIZE, initialize_dhcp, NULL,
+//                NULL, NULL, DHCP_MDNS_THREAD_PRIORITY, 0, 0);
 
 void main() {
   printf("Starting main.\n");

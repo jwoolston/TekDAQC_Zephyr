@@ -12,7 +12,7 @@
 /* A default port of 0 causes bind(2) to request an ephemeral port */
 #define DEFAULT_PORT 0
 
-static void welcome(int fd) {
+static void respond(int fd) {
   static const char msg[] = "Bonjour, Zephyr world!\n";
 
   send(fd, msg, sizeof(msg), 0);
@@ -114,7 +114,7 @@ void mdns_service(void) {
             ntohs(*portp));
 
     /* send a banner */
-    welcome(client_fd);
+    respond(client_fd);
 
     while (true) {
       /* echo 1 line at a time */

@@ -45,6 +45,7 @@ static void handler(struct net_mgmt_event_callback *cb, uint32_t mgmt_event,
  * @brief Initialize and start the DHCP system
  */
 void initialize_dhcp() {
+  LOG_MODULE_DECLARE(network);
   LOG_INF("Starting DHCPv4 client");
 
   net_mgmt_init_event_callback(&mgmt_cb, handler, NET_EVENT_IPV4_ADDR_ADD);

@@ -33,35 +33,106 @@
     };
   };
 
-  gpi_connector: connector {
-    compatible = "tekdaqc-gpi";
-    #gpio-cells = <2>;
-    gpio-map-mask = <0xffffffff 0xffffffc0>;
-    gpio-map-pass-thru = <0 0x3f>;
-    gpio-map =  <0 0 &gpioe 5 0>,    // E5
-                <1 0 &gpioe 4 0>,    // E4
-                <2 0 &gpioi 8 0>,    // I8
-                <3 0 &gpioi 11 0>,   // I11
-                <4 0 &gpioh 3 0>,    // H3
-                <5 0 &gpioh 4 0>,    // H4
-                <6 0 &gpiof 11 0>,   // F11
-                <7 0 &gpiof 15 0>,   // F15
-                <8 0 &gpioe 8 0>,    // E8
-                <9 0 &gpioe 12 0>,   // E12
-                <10 0 &gpioh 6 0>,   // H6
-                <11 0 &gpioh 11 0>,  // H11
-                <12 0 &gpioe 3 0>,   // E3
-                <13 0 &gpioe 2 0>,   // E2
-                <14 0 &gpioe 6 0>,   // E6
-                <15 0 &gpioh 5 0>,   // H5
-                <16 0 &gpiof 9 0>,   // F9
-                <17 0 &gpioh 2 0>,   // H2
-                <18 0 &gpiob 1 0>,   // B1
-                <19 0 &gpiof 13 0>,  // F13
-                <20 0 &gpiog 1 0>,   // G1
-                <21 0 &gpioe 10 0>,  // E10
-                <22 0 &gpioh 8 0>,   // H8
-                <23 0 &gpioh 10 0>;  // H10
+  gpio_keys {
+    compatible = "gpio-keys";
+    gpi_0: input_0 {
+      label = "GPI_0";
+      gpios = <&gpioe 5 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_1: input_1 {
+      label = "GPI_1";
+      gpios = <&gpioe 4 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_2: input_2 {
+      label = "GPI_2";
+      gpios = <&gpioi 8 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_3: input_3 {
+      label = "GPI_3";
+      gpios = <&gpioi 11 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_4: input_4 {
+      label = "GPI_4";
+      gpios = <&gpioh 3 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_5: input_5 {
+      label = "GPI_5";
+      gpios = <&gpioh 4 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_6: input_6 {
+      label = "GPI_6";
+      gpios = <&gpiof 11 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_7: input_7 {
+      label = "GPI_7";
+      gpios = <&gpiof 15 GPIO_ACTIVE_HIGH>;
+    };
+
+    gpi_8: input_8 {
+      label = "GPI_8";
+      gpios = <&gpioe 8 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_9: input_9 {
+      label = "GPI_9";
+      gpios = <&gpioe 12 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_10: input_10 {
+      label = "GPI_10";
+      gpios = <&gpioh 6 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_11: input_11 {
+      label = "GPI_11";
+      gpios = <&gpioh 11 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_12: input_12 {
+      label = "GPI_12";
+      gpios = <&gpioe 3 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_13: input_13 {
+      label = "GPI_13";
+      gpios = <&gpioe 2 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_14: input_14 {
+      label = "GPI_14";
+      gpios = <&gpioe 6 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_15: input_15 {
+      label = "GPI_15";
+      gpios = <&gpioh 5 GPIO_ACTIVE_HIGH>;
+    };
+
+    gpi_16: input_16 {
+      label = "GPI_16";
+      gpios = <&gpiof 9 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_17: input_17 {
+      label = "GPI_17";
+      gpios = <&gpioh 2 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_18: input_18 {
+      label = "GPI_18";
+      gpios = <&gpiob 1 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_19: input_19 {
+      label = "GPI_19";
+      gpios = <&gpiof 13 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_20: input_20 {
+      label = "GPI_20";
+      gpios = <&gpiog 1 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_21: input_21 {
+      label = "GPI_21";
+      gpios = <&gpioe 10 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_22: input_22 {
+      label = "GPI_22";
+      gpios = <&gpioh 8 GPIO_ACTIVE_HIGH>;
+    };
+    gpi_23: input_23 {
+      label = "GPI_23";
+      gpios = <&gpioh 10 GPIO_ACTIVE_HIGH>;
+    };
   };
 };
 
@@ -80,6 +151,11 @@
 &rtc { status = "okay"; };
 
 &rng { status = "okay"; };
+
+&spi1 {
+  pinctrl-0 = <&spi1_sck_pb3 &spi1_miso_pb4 &spi1_mosi_pb5>;
+  status = "okay";
+};
 
 &spi2 {
   pinctrl-0 = <&spi2_sck_pb10 &spi2_miso_pb14 &spi2_mosi_pi3>;

@@ -1,0 +1,1 @@
+add_subdirectory_ifdef(CONFIG_ADC_ADS125X ads1256)

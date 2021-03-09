@@ -1,0 +1,3 @@
+comment "ADC Drivers"
+
+rsource "ads1256/Kconfig"

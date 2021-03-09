@@ -1,0 +1,33 @@
+# ADS125x ADC configuration options
+
+config ADC_ADS125X
+	bool "ADS1255/ADS1256 driver"
+	depends on SPI
+	help
+	  Enable ADS1255/ADS1256 ADC driver.
+
+	  The AdS1255/ADS1256 are 2/8 channel 24-bit Sigma-Delta A/D converters
+	  with SPI interface.
+
+if ADC_ADS125X
+
+config ADC_ADS125X_INIT_PRIORITY
+	int "Init priority"
+	default 80
+	help
+	  ADC_ADS125X ADC device driver initialization priority.
+
+config ADC_ADS125X_ACQUISITION_THREAD_STACK_SIZE
+	int "Stack size for the ADC data acquisition thread"
+	default 512
+	help
+	  Size of the stack used for the internal data acquisition
+	  thread.
+
+config ADC_ADC_ADS125X_ACQUISITION_THREAD_PRIO
+	int "Priority for the ADC data acquisition thread"
+	default 0
+	help
+	  Priority level for the internal ADC data acquisition thread.
+
+endif # ADC_ADS125X

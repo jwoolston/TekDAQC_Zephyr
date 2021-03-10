@@ -1,4 +1,3 @@
-name: TekDAQC
 build:
   cmake: .
   kconfig: Kconfig.tekdaqc

@@ -4,13 +4,13 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(rtc, LOG_LEVEL_DBG);
 
-static const struct device *rtc = nullptr;
+static const struct device *rtc = NULL;
 static bool initialized = false;
 
 error_t rtc_configure() {
   if (!initialized) {
     rtc = device_get_binding(RTC_LABEL);
-    if (rtc == nullptr) {
+    if (rtc == NULL) {
       LOG_ERR("No STM32 RTC device available\n");
       return ENODEV;
     }

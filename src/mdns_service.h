@@ -2,8 +2,10 @@
 #define TEKDAQC_ZEPHYR_MDNS_SERVICE_H
 
 #include <net/dns_sd.h>
-#include <net/socket.h>
+#include <sys/socket.h>
 #include <posix/netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
 #include <string.h>
 #include <zephyr.h>
 

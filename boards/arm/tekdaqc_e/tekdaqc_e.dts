@@ -13,6 +13,22 @@
     zephyr,flash = &flash0;
   };
 
+  soc {
+    sdmmc: sdmmc@40012C00 {
+      compatible = "st,stm32-sdmmc";
+      reg = <0x40012C00 0x3000>;
+      label = "SDMMC0";
+      clocks = <&rcc STM32_CLOCK_BUS_APB2 0x00000800>;
+      pinctrl-0 = <&sdmmc_d0_pc8
+                     &sdmmc_d1_pc9
+                     &sdmmc_d2_pc10
+                     &sdmmc_d3_pc11
+                     &sdmmc_ck_pc12
+                     &sdmmc_cmd_pd2>;
+      status = "okay";
+    };
+  };
+
   /*leds {
     compatible = "gpio-leds";
     test_pin_1: led_1 {
@@ -136,11 +152,11 @@
   };*/
 };
 
-/*&usart2 {
+&usart2 {
   pinctrl-0 = <&usart2_tx_pd5 &usart2_rx_pd6>;
   current-speed = <115200>;
   status = "okay";
-};*/
+};
 
 &usart3 {
   pinctrl-0 = <&usart3_tx_pd8 &usart3_rx_pd9>;
@@ -172,8 +188,34 @@
                  &eth_tx_en_pb11
                  &eth_txd0_pg13
                  &eth_rxd0_pc4>;
-  //local-mac-address = [00 80 E1 00 00 00];
   status = "okay";
+};
+
+&pinctrl {
+  sdmmc_d0_pc8: sdmmc_d0_pc8 {
+    pinmux = <STM32_PINMUX('C', 8, AF12)>;
+    slew-rate = "very-high-speed";
+  };
+  sdmmc_d1_pc9: sdmmc_d1_pc9 {
+    pinmux = <STM32_PINMUX('C', 9, AF12)>;
+    slew-rate = "very-high-speed";
+  };
+  sdmmc_d2_pc10: sdmmc_d2_pc10 {
+    pinmux = <STM32_PINMUX('C', 10, AF12)>;
+    slew-rate = "very-high-speed";
+  };
+  sdmmc_d3_pc11: sdmmc_d3_pc11 {
+    pinmux = <STM32_PINMUX('C', 11, AF12)>;
+    slew-rate = "very-high-speed";
+  };
+  sdmmc_ck_pc12: sdmmc_ck_pc12 {
+    pinmux = <STM32_PINMUX('C', 12, AF12)>;
+    slew-rate = "very-high-speed";
+  };
+  sdmmc_cmd_pd2: sdmmc_cmd_pd2 {
+    pinmux = <STM32_PINMUX('D', 2, AF12)>;
+    slew-rate = "very-high-speed";
+  };
 };
 
 /*&adc1 {

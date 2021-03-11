@@ -8,5 +8,10 @@ toolchain:
 ram: 128
 flash: 1024
 supported:
+  - uart
   - gpio
+  - counter
+  - i2c
+  - pwm
   - spi
+  - netif:eth

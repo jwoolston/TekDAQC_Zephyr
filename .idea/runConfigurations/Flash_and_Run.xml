@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Flash and Run" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="dynamic_stabilizer" TARGET_NAME="app" CONFIG_NAME="Debug" version="1" RUN_TARGET_PROJECT_NAME="dynamic_stabilizer" RUN_TARGET_NAME="zephyr_final">
-    <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="$PROJECT_DIR$/boards/arm/open407I/support/openocd.cfg" reset-type="INIT" download-type="ALWAYS">
+  <configuration default="false" name="Flash and Run" type="com.jetbrains.cidr.embedded.openocd.conf.type" factoryName="com.jetbrains.cidr.embedded.openocd.conf.factory" REDIRECT_INPUT="false" ELEVATE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="TekDAQC_Zephyr" TARGET_NAME="app" CONFIG_NAME="Debug" version="1" RUN_TARGET_PROJECT_NAME="TekDAQC_Zephyr" RUN_TARGET_NAME="zephyr_final">
+    <openocd version="1" gdb-port="3333" telnet-port="4444" board-config="$PROJECT_DIR$/boards/arm/tekdaqc_e/support/openocd.cfg" reset-type="HALT" download-type="UPDATED_ONLY">
       <debugger kind="GDB" isBundled="true" />
     </openocd>
     <method v="2">

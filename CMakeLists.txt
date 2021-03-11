@@ -15,7 +15,8 @@ target_sources(app PRIVATE
         src/network.c
         src/network.h
         src/mdns_service.h
-        src/rtc.c
-        src/rtc.h
-        src/sntp.h)
+        #src/rtc.c
+        #src/rtc.h
+        #src/sntp.h
+        )
 

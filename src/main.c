@@ -6,17 +6,19 @@
 LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 
 #include "network.h"
+//#include "mdns_service.h"
 
 //K_THREAD_DEFINE(dhcp_mdns, DHCP_MDNS_THREAD_STACKSIZE, initialize_dhcp, NULL,
 //                NULL, NULL, DHCP_MDNS_THREAD_PRIORITY, 0, 0);
 
 void main() {
-  printf("Starting main.\n");
+  LOG_DBG("Starting main.");
 
   initialize_network();
   int i = 0;
   while (true) {
-    printf("Loop %d", i++);
-    k_sleep(K_MSEC(16));
+    i++;
+    //LOG_DBG("Loop %d", i++);
+    //k_sleep(K_MSEC(16));
   }
 }

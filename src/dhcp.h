@@ -6,6 +6,7 @@
 #include <net/net_if.h>
 #include <net/net_mgmt.h>
 #include "sntp.h"
+#include "webserver.h"
 
 static struct net_mgmt_event_callback mgmt_cb;
 
@@ -37,6 +38,7 @@ static void handler(struct net_mgmt_event_callback *cb, uint32_t mgmt_event,
             log_strdup(net_addr_ntop(AF_INET, &iface->config.ip.ipv4->gw, buf,
                                      sizeof(buf))));
     //sntp();
+    start_http_server();
   }
 }
 

@@ -1,13 +1,13 @@
 #include <disk/disk_access.h>
 #include <ff.h>
 #include <fs/fs.h>
-#include <logging/log.h>
 #include <stdio.h>
-
-LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 
 #include "network.h"
 //#include "mdns_service.h"
+
+#include <logging/log.h>
+LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
 
 // K_THREAD_DEFINE(dhcp_mdns, DHCP_MDNS_THREAD_STACKSIZE, initialize_dhcp, NULL,
 //                NULL, NULL, DHCP_MDNS_THREAD_PRIORITY, 0, 0);

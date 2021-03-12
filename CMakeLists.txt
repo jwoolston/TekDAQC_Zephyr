@@ -14,9 +14,8 @@ target_sources(app PRIVATE
         src/dhcp.h
         src/network.c
         src/network.h
-        src/mdns_service.h
         #src/rtc.c
         #src/rtc.h
-        #src/sntp.h
+        src/sntp.h
         )
 

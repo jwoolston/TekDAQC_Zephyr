@@ -5,7 +5,7 @@
 #include <net/net_core.h>
 #include <net/net_if.h>
 #include <net/net_mgmt.h>
-#include "mdns_service.h"
+#include "sntp.h"
 
 static struct net_mgmt_event_callback mgmt_cb;
 
@@ -36,8 +36,7 @@ static void handler(struct net_mgmt_event_callback *cb, uint32_t mgmt_event,
     LOG_INF("Router: %s",
             log_strdup(net_addr_ntop(AF_INET, &iface->config.ip.ipv4->gw, buf,
                                      sizeof(buf))));
-    LOG_INF("Starting mDNS service.");
-    mdns_service();
+    //sntp();
   }
 }
 

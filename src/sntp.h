@@ -2,18 +2,17 @@
 #define TEKDAQC_ZEPHYR_SNTP_H
 
 #include <logging/log.h>
-LOG_MODULE_DECLARE(network, LOG_LEVEL_DBG);
 
 #include <net/sntp.h>
 #ifdef CONFIG_POSIX_API
 #include <arpa/inet.h>
 #endif
 
-#include "rtc.h"
-
 #define SNTP_PORT 123
+#define SERVER_ADDR "192.168.0.191"
 
 void sntp(void) {
+  LOG_MODULE_DECLARE(network, LOG_LEVEL_DBG);
   struct sntp_ctx ctx;
   struct sockaddr_in addr;
 #if defined(CONFIG_NET_IPV6)

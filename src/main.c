@@ -73,7 +73,7 @@ void main() {
     const char* fname = "/SD:/test.txt";
     res = fs_stat(fname, NULL);
     struct fs_file_t file;
-    if (res == 0) {
+    if (res == ENOENT) {
       res = fs_open(&file, fname, FS_O_CREATE | FS_O_WRITE);
       if (res < 0) {
         LOG_ERR("FAIL: open %s: %d\n", fname, res);

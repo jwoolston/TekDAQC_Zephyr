@@ -67,7 +67,7 @@ void main() {
   int res = fs_mount(&mp);
 
   if (res == FR_OK) {
-    LOG_DBG("Disk mounted.\n");
+    LOG_DBG("Disk mounted.");
     lsdir(disk_mount_pt);
     LOG_DBG("Finished listing directory.");
     const char* fname = "/SD:/test.txt";
@@ -76,20 +76,13 @@ void main() {
     if (res == ENOENT) {
       res = fs_open(&file, fname, FS_O_CREATE | FS_O_WRITE);
       if (res < 0) {
-        LOG_ERR("FAIL: open %s: %d\n", fname, res);
+        LOG_ERR("FAIL: open %s: %d", fname, res);
       } else {
         fs_close(&file);
       }
     }
   } else {
-    LOG_ERR("Error mounting disk.\n");
-  }
-
-  int i = 0;
-  while (true) {
-    i++;
-    // LOG_DBG("Loop %d", i++);
-    // k_sleep(K_MSEC(16));
+    LOG_ERR("Error mounting disk.");
   }
 }
 
@@ -103,7 +96,7 @@ static int lsdir(const char *path) {
   /* Verify fs_opendir() */
   res = fs_opendir(&dirp, path);
   if (res) {
-    LOG_ERR("Error opening dir %s [%d]\n", path, res);
+    LOG_ERR("Error opening dir %s [%d]", path, res);
     return res;
   }
 
@@ -118,9 +111,9 @@ static int lsdir(const char *path) {
     }
 
     if (entry.type == FS_DIR_ENTRY_DIR) {
-      LOG_DBG("[DIR ] %s\n", entry.name);
+      LOG_DBG("[DIR ] %s", entry.name);
     } else {
-      LOG_DBG("[FILE] %s (size = %zu)\n", entry.name, entry.size);
+      LOG_DBG("[FILE] %s (size = %zu)", entry.name, entry.size);
     }
   }
 

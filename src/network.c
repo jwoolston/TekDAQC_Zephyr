@@ -13,5 +13,7 @@ LOG_MODULE_REGISTER(network, LOG_LEVEL_DBG);
 
 void initialize_network() {
   initialize_dhcp();
-  sntp();
+  LOG_INF("Starting HTTP Server.");
+  start_http_server();
+  //sntp();
 }

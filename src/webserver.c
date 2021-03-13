@@ -9,7 +9,7 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(webserver, LOG_LEVEL_DBG);
 
-#define HTTP_PORT 8080
+#define HTTP_PORT 80
 #define HTTPS_PORT 4443
 
 #define CIVETWEB_MAIN_THREAD_STACK_SIZE CONFIG_MAIN_STACK_SIZE
@@ -133,6 +133,7 @@ int history_handler(struct mg_connection *conn, void *cbdata) {
 }
 
 void *server_pthread(void *arg) {
+  LOG_DBG("Server thread initializing.");
   static const char *const options[] = {"listening_ports",
                                         STRINGIFY(HTTP_PORT),
                                         "num_threads",
@@ -170,5 +171,7 @@ void start_http_server(void) {
   (void)pthread_attr_setstack(&civetweb_attr, &civetweb_stack,
                               CIVETWEB_MAIN_THREAD_STACK_SIZE);
 
+  LOG_DBG("Creating HTTP server thread.");
   (void)pthread_create(&civetweb_thread, &civetweb_attr, &server_pthread, 0);
+  LOG_DBG("HTTP server thread created.");
 }

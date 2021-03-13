@@ -176,3 +176,7 @@ int bind(int sock, const struct sockaddr *addr, socklen_t addrlen) {
 int accept(int sock, struct sockaddr *addr, socklen_t *addrlen) {
   return zsock_accept(sock, addr, addrlen);
 }
+
+int flockfile(FILE *stream) { return 0; }
+int fflush(FILE *stream) { return 0; }
+int funlockfile(FILE *stream) { return 0; }

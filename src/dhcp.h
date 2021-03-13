@@ -37,8 +37,6 @@ static void handler(struct net_mgmt_event_callback *cb, uint32_t mgmt_event,
     LOG_INF("Router: %s",
             log_strdup(net_addr_ntop(AF_INET, &iface->config.ip.ipv4->gw, buf,
                                      sizeof(buf))));
-    //sntp();
-    start_http_server();
   }
 }
 

@@ -29,7 +29,7 @@
     };
   };
 
-  /*leds {
+  leds {
     compatible = "gpio-leds";
     test_pin_1: led_1 {
       gpios = <&gpiog 6 GPIO_ACTIVE_HIGH>;
@@ -149,7 +149,7 @@
       label = "GPI_23";
       gpios = <&gpioh 10 GPIO_ACTIVE_HIGH>;
     };
-  };*/
+  };
 };
 
 &usart2 {
@@ -168,7 +168,7 @@
 
 &rng { status = "okay"; };
 
-/*&spi1 {
+&spi1 {
   pinctrl-0 = <&spi1_sck_pb3 &spi1_miso_pb4 &spi1_mosi_pb5>;
   status = "okay";
 };
@@ -176,7 +176,7 @@
 &spi2 {
   pinctrl-0 = <&spi2_sck_pb10 &spi2_miso_pb14 &spi2_mosi_pi3>;
   status = "okay";
-};*/
+};
 
 &mac {
   pinctrl-0 = <&eth_ref_clk_pa1
@@ -218,7 +218,7 @@
   };
 };
 
-/*&adc1 {
+&adc1 {
   pinctrl-0 = <&adc1_in0_pa0 &adc1_in3_pa3 &adc1_in6_pa6>;
   status = "okay";
-};*/
+};

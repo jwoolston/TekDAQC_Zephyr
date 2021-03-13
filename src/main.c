@@ -90,6 +90,7 @@ static int lsdir(const char *path) {
   int res;
   struct fs_dir_t dirp;
   static struct fs_dirent entry;
+  static char path_str[256];
 
   fs_dir_t_init(&dirp);
 
@@ -112,6 +113,10 @@ static int lsdir(const char *path) {
 
     if (entry.type == FS_DIR_ENTRY_DIR) {
       LOG_DBG("[DIR ] %s", entry.name);
+      strcpy(path_str, path);
+      strcat(path_str, "/");
+      strcat(path_str, entry.name);
+      lsdir(path_str);
     } else {
       LOG_DBG("[FILE] %s (size = %zu)", entry.name, entry.size);
     }

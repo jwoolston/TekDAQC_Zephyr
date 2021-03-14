@@ -18,12 +18,11 @@ project(TekDAQC_Zephyr)
 target_sources(app PRIVATE
         src/main.c
         src/dhcp.h
+        src/timestamp.h
         src/network.c
         src/network.h
         src/webserver.c
         src/webserver.h
-        #src/rtc.c
-        #src/rtc.h
         src/sntp.h
         ${civetweb_src_dir}/libc_extensions.c
         )

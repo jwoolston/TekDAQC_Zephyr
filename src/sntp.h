@@ -3,77 +3,32 @@
 
 #include <logging/log.h>
 
-#include <net/sntp.h>
-#ifdef CONFIG_POSIX_API
 #include <arpa/inet.h>
-#endif
+#include <net/sntp.h>
+#include <posix/time.h>
 
-#define SNTP_PORT 123
-#define SERVER_ADDR "192.168.0.191"
+#define SERVER_ADDR "192.168.0.191" //"time.nist.gov"
 
-void sntp(void) {
-  LOG_MODULE_DECLARE(network, LOG_LEVEL_DBG);
-  struct sntp_ctx ctx;
-  struct sockaddr_in addr;
-#if defined(CONFIG_NET_IPV6)
-  struct sockaddr_in6 addr6;
-#endif
-  struct sntp_time sntp_time;
-  int rv;
+void init_clock_via_sntp(void) {
+  LOG_MODULE_DECLARE(network);
+  LOG_INF("Syncing SNTP Time.");
+  struct sntp_time ts;
+  struct timespec tspec;
+  int res = sntp_simple(SERVER_ADDR,
+                        CONFIG_NET_CONFIG_SNTP_INIT_TIMEOUT, &ts);
 
-  /* ipv4 */
-  memset(&addr, 0, sizeof(addr));
-  addr.sin_family = AF_INET;
-  addr.sin_port = htons(SNTP_PORT);
-  inet_pton(AF_INET, SERVER_ADDR, &addr.sin_addr);
-
-  rv = sntp_init(&ctx, (struct sockaddr *)&addr, sizeof(struct sockaddr_in));
-  if (rv < 0) {
-    LOG_ERR("Failed to init SNTP IPv4 ctx: %d", rv);
-    goto end;
+  if (res < 0) {
+    LOG_ERR("Cannot fetch time using SNTP: %d", res);
+    return;
   }
 
-  LOG_INF("Sending SNTP IPv4 request...");
-  rv = sntp_query(&ctx, 4 * MSEC_PER_SEC, &sntp_time);
-  if (rv < 0) {
-    LOG_ERR("SNTP IPv4 request failed: %d", rv);
-    goto end;
+  tspec.tv_sec = ts.seconds;
+  tspec.tv_nsec = ((uint64_t)ts.fraction * (1000 * 1000 * 1000)) >> 32;
+  res = clock_settime(CLOCK_REALTIME, &tspec);
+  if (res < 0) {
+    LOG_ERR("Cannot set real clock time: %d", res);
+    return;
   }
-
-  LOG_INF("status: %d", rv);
-  LOG_INF("time since Epoch: high word: %u, low word: %u",
-          (uint32_t)(sntp_time.seconds >> 32), (uint32_t)sntp_time.seconds);
-
-#if defined(CONFIG_NET_IPV6)
-  sntp_close(&ctx);
-
-  /* ipv6 */
-  memset(&addr6, 0, sizeof(addr6));
-  addr6.sin6_family = AF_INET6;
-  addr6.sin6_port = htons(SNTP_PORT);
-  inet_pton(AF_INET6, SERVER_ADDR6, &addr6.sin6_addr);
-
-  rv = sntp_init(&ctx, (struct sockaddr *)&addr6, sizeof(struct sockaddr_in6));
-  if (rv < 0) {
-    LOG_ERR("Failed to init SNTP IPv6 ctx: %d", rv);
-    goto end;
-  }
-
-  LOG_INF("Sending SNTP IPv6 request...");
-  /* With such a timeout, this is expected to fail. */
-  rv = sntp_query(&ctx, 0, &sntp_time);
-  if (rv < 0) {
-    LOG_ERR("SNTP IPv6 request: %d", rv);
-    goto end;
-  }
-
-  LOG_INF("status: %d", rv);
-  LOG_INF("time since Epoch: high word: %u, low word: %u",
-          (uint32_t)(sntp_time.seconds >> 32), (uint32_t)sntp_time.seconds);
-#endif
-
-end:
-  sntp_close(&ctx);
 }
 
 #endif // TEKDAQC_ZEPHYR_SNTP_H

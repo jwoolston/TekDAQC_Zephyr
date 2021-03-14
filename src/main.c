@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "network.h"
-//#include "mdns_service.h"
+#include "timestamp.h"
 
 #include <logging/log.h>
 LOG_MODULE_REGISTER(main, LOG_LEVEL_DBG);
@@ -30,6 +30,10 @@ static const char *disk_mount_pt = "/SD:";
 void main() {
   LOG_DBG("Starting main.");
 
+  /*LOG_DBG("Configuring logging timestamp.");
+  configure_logging_timestamp();*/
+
+  LOG_DBG("Initializing network.");
   initialize_network();
 
   LOG_DBG("Attempting to check file system.");

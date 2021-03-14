@@ -6,7 +6,6 @@
 #include <net/net_if.h>
 #include <net/net_mgmt.h>
 #include "sntp.h"
-#include "webserver.h"
 
 static struct net_mgmt_event_callback mgmt_cb;
 
@@ -26,7 +25,7 @@ static void handler(struct net_mgmt_event_callback *cb, uint32_t mgmt_event,
       continue;
     }
 
-    LOG_INF("Your address: %s",
+    LOG_INF("IPv4 address: %s",
             log_strdup(net_addr_ntop(
                 AF_INET, &iface->config.ip.ipv4->unicast[i].address.in_addr,
                 buf, sizeof(buf))));
@@ -34,9 +33,10 @@ static void handler(struct net_mgmt_event_callback *cb, uint32_t mgmt_event,
     LOG_INF("Subnet: %s",
             log_strdup(net_addr_ntop(AF_INET, &iface->config.ip.ipv4->netmask,
                                      buf, sizeof(buf))));
-    LOG_INF("Router: %s",
+    LOG_INF("Gateway: %s",
             log_strdup(net_addr_ntop(AF_INET, &iface->config.ip.ipv4->gw, buf,
                                      sizeof(buf))));
+    init_clock_via_sntp();
   }
 }
 

@@ -5,12 +5,16 @@
 #include <zephyr.h>
 
 #include "civetweb.h"
+#include "sdcard.h"
 
 #include <logging/log.h>
 LOG_MODULE_REGISTER(webserver, LOG_LEVEL_DBG);
 
 #define HTTP_PORT 80
 #define HTTPS_PORT 4443
+
+#define WEBSERVER_ROOT "web"
+#define STREAM_BUFFER_SIZE 4096
 
 #define CIVETWEB_MAIN_THREAD_STACK_SIZE CONFIG_MAIN_STACK_SIZE
 
@@ -35,24 +39,56 @@ struct civetweb_info {
     .offset = offsetof(struct_, member_), .type = type_                        \
   }
 
+
+static int stream_file(struct mg_connection *conn, const char *path) {
+  static char uri_path[4096];
+  static struct fs_dirent entry;
+  static struct fs_file_t zfp;
+  strcpy(uri_path, get_disk_mount());
+  strcat(uri_path, "/");
+  strcat(uri_path, WEBSERVER_ROOT);
+  strcat(uri_path, path);
+
+  int err = fs_stat(uri_path, &entry);
+  if (err) {
+    LOG_ERR("Unable to retrieve file information: %s. Reason: %d", uri_path, err);
+    return 404;
+  }
+  err = fs_open(&zfp, uri_path, FS_O_READ);
+  if (err) {
+    LOG_ERR("Failed to open file for read: %s. Reason: %d", uri_path, err);
+    return 500;
+  }
+  static uint8_t buffer[STREAM_BUFFER_SIZE];
+  int remaining = entry.size;
+  while (remaining > 0) {
+    ssize_t count = remaining > STREAM_BUFFER_SIZE ? STREAM_BUFFER_SIZE : remaining;
+    err = fs_read(&zfp, buffer, count);
+    if (err) {
+      LOG_ERR("Failed to read data from file: %s. Reason. %d", uri_path, err);
+    }
+    err = mg_write(conn, buffer, count);
+    if (err > 0) {
+      remaining -= err;
+    } else if (err == 0) {
+      LOG_WRN("Unable to write %d bytes to connection which has already been closed.", count);
+      return 500;
+    } else {
+      LOG_ERR("Error writing %d bytes to connection.", count);
+      return 500;
+    }
+  }
+  err = fs_close(&zfp);
+  if (err) {
+    LOG_ERR("Failed to close file: %s. Reason: %d", uri_path, err);
+  }
+  return 200;
+}
+
 void send_ok(struct mg_connection *conn) {
   mg_printf(conn, "HTTP/1.1 200 OK\r\n"
                   "Content-Type: text/html\r\n"
                   "Connection: close\r\n\r\n");
-}
-
-int hello_world_handler(struct mg_connection *conn, void *cbdata) {
-  send_ok(conn);
-  mg_printf(conn, "<html><body>");
-  mg_printf(conn, "<h3>Hello World from Zephyr!</h3>");
-  mg_printf(conn, "See also:\n");
-  mg_printf(conn, "<ul>\n");
-  mg_printf(conn, "<li><a href=/info>system info</a></li>\n");
-  mg_printf(conn, "<li><a href=/history>cookie demo</a></li>\n");
-  mg_printf(conn, "</ul>\n");
-  mg_printf(conn, "</body></html>\n");
-
-  return 200;
 }
 
 int system_info_handler(struct mg_connection *conn, void *cbdata) {
@@ -96,40 +132,10 @@ int system_info_handler(struct mg_connection *conn, void *cbdata) {
   return 200;
 }
 
-int history_handler(struct mg_connection *conn, void *cbdata) {
-  const struct mg_request_info *req_info = mg_get_request_info(conn);
-  const char *cookie = mg_get_header(conn, "Cookie");
-  char history_str[64];
-
-  mg_get_cookie(cookie, "history", history_str, sizeof(history_str));
-
-  mg_printf(conn, "HTTP/1.1 200 OK\r\n");
-  mg_printf(conn, "Connection: close\r\n");
-  mg_printf(conn, "Set-Cookie: history='%s'\r\n", req_info->local_uri);
-  mg_printf(conn, "Content-Type: text/html\r\n\r\n");
-
-  mg_printf(conn, "<html><body>");
-
-  mg_printf(conn, "<h3>Your URI is: %s<h3>\n", req_info->local_uri);
-
-  if (history_str[0] == 0) {
-    mg_printf(conn, "<h5>This is your first visit.</h5>\n");
-  } else {
-    mg_printf(conn, "<h5>your last /history visit was: %s</h5>\n", history_str);
-  }
-
-  mg_printf(conn, "Some cookie-saving links to try:\n");
-  mg_printf(conn, "<ul>\n");
-  mg_printf(conn, "<li><a href=/history/first>first</a></li>\n");
-  mg_printf(conn, "<li><a href=/history/second>second</a></li>\n");
-  mg_printf(conn, "<li><a href=/history/third>third</a></li>\n");
-  mg_printf(conn, "<li><a href=/history/fourth>fourth</a></li>\n");
-  mg_printf(conn, "<li><a href=/history/fifth>fifth</a></li>\n");
-  mg_printf(conn, "</ul>\n");
-
-  mg_printf(conn, "</body></html>\n");
-
-  return 200;
+int file_handler(struct mg_connection *conn, void *cbdata) {
+  const struct mg_request_info* request = mg_get_request_info(conn);
+  LOG_DBG("Processing request for file: %s", request->request_uri);
+  return stream_file(conn, request->request_uri);
 }
 
 void *server_pthread(void *arg) {
@@ -155,9 +161,9 @@ void *server_pthread(void *arg) {
     return 0;
   }
 
-  mg_set_request_handler(ctx, "/$", hello_world_handler, 0);
-  mg_set_request_handler(ctx, "/info$", system_info_handler, 0);
-  mg_set_request_handler(ctx, "/history", history_handler, 0);
+  //mg_set_request_handler(ctx, "/$", hello_world_handler, 0);
+  //mg_set_request_handler(ctx, "/info$", system_info_handler, 0);
+  mg_set_request_handler(ctx, "/**", file_handler, 0);
 
   LOG_DBG("Webserver started.");
   return 0;

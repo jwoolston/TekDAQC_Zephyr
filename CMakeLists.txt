@@ -21,6 +21,8 @@ target_sources(app PRIVATE
         src/timestamp.h
         src/network.c
         src/network.h
+        src/sdcard.c
+        src/sdcard.h
         src/webserver.c
         src/webserver.h
         src/sntp.h

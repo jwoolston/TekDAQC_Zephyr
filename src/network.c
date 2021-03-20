@@ -4,7 +4,7 @@
 LOG_MODULE_REGISTER(network, LOG_LEVEL_DBG);
 
 #include "dhcp.h"
-#include "webserver.h"
+#include "web/server.h"
 
 void initialize_network() {
   initialize_dhcp();
